@@ -46,3 +46,13 @@ chezmoi x86_64 uses the explicitly named `linux-musl_amd64` asset; upstream
 Git integration fixtures additionally cover snapshot backups, tracking main, a real
 upstream commit followed by plain chezmoi update/apply, offline failure, and
 preserving existing/custom chezmoi configuration.
+
+## Chezmoi-first migration acceptance (2026-09-07)
+
+On the same Pi, published source `5724e56` migrated the old snapshot to a clean
+Git checkout tracking `origin/main`. The old source and chezmoi config were backed
+up. Saved source=proxy/package=direct preferences let a plain `chezmoi update`
+complete in a shell with no proxy variables. Its package/apply hooks succeeded,
+chezmoi diff was empty, and the existing .profile hash was identical. Network,
+firewall, Nikki and active-marker hashes also remained identical. iSH emulator
+acceptance remains separate and pending.

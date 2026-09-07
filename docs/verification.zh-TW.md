@@ -36,3 +36,12 @@ chezmoi x86_64 使用明確的 `linux-musl_amd64` asset；upstream 的
 
 Git 整合 fixture 另涵蓋 snapshot backup、main tracking、真正 upstream 新 commit
 後的普通 chezmoi update／apply、離線失敗，以及既有／自訂 chezmoi config 保留。
+
+## Chezmoi 預設流程遷移驗收（2026-09-07）
+
+同一台 Pi 使用已發布來源 `5724e56`，將舊 snapshot 遷移成追蹤 `origin/main` 的乾淨
+Git checkout，並保留舊 source 和 chezmoi config backup。
+儲存 source=proxy／package=direct 後，在沒有 proxy 變數的 shell 直接執行
+`chezmoi update` 成功；套件／apply hooks 完成、chezmoi diff 為空，原 .profile hash 相同。
+network、firewall、Nikki、active marker 的 hash 也全部維持一致。
+iSH 模擬器驗收仍是獨立且待完成的項目。
