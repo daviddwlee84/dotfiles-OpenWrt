@@ -56,3 +56,7 @@ complete in a shell with no proxy variables. Its package/apply hooks succeeded,
 chezmoi diff was empty, and the existing .profile hash was identical. Network,
 firewall, Nikki and active-marker hashes also remained identical. iSH emulator
 acceptance remains separate and pending.
+
+Startup probes now use SIGKILL after 15 seconds, with distinct download/hash/
+extract/version/template stages. A regression test runs a process that ignores
+TERM and verifies it is killed. This does not establish iSH emulator compatibility.

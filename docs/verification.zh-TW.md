@@ -45,3 +45,6 @@ Git checkout，並保留舊 source 和 chezmoi config backup。
 `chezmoi update` 成功；套件／apply hooks 完成、chezmoi diff 為空，原 .profile hash 相同。
 network、firewall、Nikki、active marker 的 hash 也全部維持一致。
 iSH 模擬器驗收仍是獨立且待完成的項目。
+
+啟動 probe 現在於 15 秒後送 SIGKILL，並區分下載／hash／解壓／版本／template 階段。
+回歸測試驗證忽略 TERM 的程序仍會被終止；這不代表 iSH 模擬器相容性已驗收。
