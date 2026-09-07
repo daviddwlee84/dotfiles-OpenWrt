@@ -9,7 +9,7 @@ netrun status
 netrun direct -- curl -q -I https://api.github.com
 netrun proxy -- curl -q -I https://raw.githubusercontent.com
 netrun proxy -- git clone https://github.com/daviddwlee84/dotfiles-OpenWrt.git
-netrun proxy -- sh bootstrap.sh --package-network direct --with starship
+netrun proxy -- sh bootstrap.sh --source-network proxy --package-network direct --with starship
 netrun shell proxy          # 新的 ash login shell
 netrun shell proxy bash     # 已安裝時使用 Bash／Starship
 exit                       # 回到原本的環境
@@ -39,7 +39,7 @@ Ping github.com 只證明該主機的 ICMP 可達，不代表 raw.githubusercont
 api=https://api.github.com/repos/daviddwlee84/dotfiles-OpenWrt/contents
 curl -q -fL -H 'Accept: application/vnd.github.raw+json' -o netrun.sh "$api/home/dot_local/bin/executable_netrun?ref=main"
 sh netrun.sh proxy -- curl -q -fL -o bootstrap.sh https://raw.githubusercontent.com/daviddwlee84/dotfiles-OpenWrt/main/bootstrap.sh
-sh netrun.sh proxy -- sh bootstrap.sh --package-network direct --with starship
+sh netrun.sh proxy -- sh bootstrap.sh --source-network proxy --package-network direct --with starship
 ```
 
 Helper 需要已有啟用且帶認證的 Nikki，並拒絕在 managed-router transaction pending 時運行。
@@ -50,3 +50,18 @@ Helper 需要已有啟用且帶認證的 Nikki，並拒絕在 managed-router tra
 及 `unexpected end of file`；區域套件 mirror 直連可用。範例因此明確選擇套件直連、
 GitHub assets 走代理。直接操作 apk 可用 `netrun direct -- apk update`。
 原生 BusyBox tar 也沒有 --strip-components，bootstrap 已改用可攜的單一 root 解壓方式。
+
+## 直接使用 chezmoi update
+
+遇到相同網路情況的 router，從 source 設定一次：
+
+```sh
+sh ~/.local/share/dotfiles-OpenWrt/bootstrap.sh --source-network proxy --package-network direct
+chezmoi update
+```
+
+來源 Git／工具下載走 Nikki，缺少的原生套件走直連 feed。local state 只記錄
+proxy／direct 選擇；每次執行才從 UCI 讀取憑證並交給子程序。
+這是 dotfiles 更新的偏好，不會讓其他 shell 或 router 流量自動代理。
+臨時覆寫可用 `DOTFILES_SOURCE_NETWORK=direct chezmoi update`。
+參考 Pi 的 Git HTTPS 直連逾時，相同 ls-remote 經 Nikki 成功。

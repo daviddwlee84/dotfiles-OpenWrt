@@ -33,3 +33,6 @@ network、firewall、Nikki、active marker 的檔案 hash 未改變；五個既�
 
 chezmoi x86_64 使用明確的 `linux-musl_amd64` asset；upstream 的
 `linux_amd64` 是 glibc build 別名，不能直接當成 router 預設 binary。
+
+Git 整合 fixture 另涵蓋 snapshot backup、main tracking、真正 upstream 新 commit
+後的普通 chezmoi update／apply、離線失敗，以及既有／自訂 chezmoi config 保留。
