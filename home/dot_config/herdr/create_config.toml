@@ -1,0 +1,11 @@
+# Minimal seed. Herdr/user owns this file after the first apply.
+# Ctrl+b prefix and the built-in keymap match the basic Unix workflow.
+[theme]
+name = "catppuccin"
+
+[ui]
+confirm_close = true
+
+[terminal]
+shell_mode = "auto"
+new_cwd = "follow"

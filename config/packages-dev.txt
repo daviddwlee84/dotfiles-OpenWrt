@@ -1,0 +1,5 @@
+vim
+htop
+ripgrep
+rsync
+python3-light

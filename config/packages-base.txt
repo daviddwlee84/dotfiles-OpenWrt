@@ -1,0 +1,9 @@
+git
+git-http
+openssh-client
+tmux
+nano
+curl
+ca-bundle
+jq
+less
