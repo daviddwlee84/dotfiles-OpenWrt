@@ -48,3 +48,10 @@ iSH 模擬器驗收仍是獨立且待完成的項目。
 
 啟動 probe 現在於 15 秒後送 SIGKILL，並區分下載／hash／解壓／版本／template 階段。
 回歸測試驗證忽略 TERM 的程序仍會被終止；這不代表 iSH 模擬器相容性已驗收。
+
+## Btop 與 UTF-8 locale（2026-09-08）
+
+使用者在同一台 ImmortalWrt 裝置安裝原生 btop 1.4.7-r1；登入環境沒有 LANG、LC_ALL
+或 LC_CTYPE。設定 LANG=C.UTF-8 後，btop 不加 --force-utf 即可進入互動介面並正常退出。
+測試使用暫時的 CPU／記憶體版面，保留原有 btop 設定。
+受管理 profile 僅在 LANG 未設定或為空字串時提供預設值，保留各 category 覆寫。

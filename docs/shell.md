@@ -40,3 +40,27 @@ platforms now default to chezmoi; subsequent configuration updates are simply
 References: [Starship guide](https://starship.rs/guide/),
 [Starship releases](https://github.com/starship/starship/releases),
 [Alpine v3.14 community x86 index](https://dl-cdn.alpinelinux.org/alpine/v3.14/community/x86/APKINDEX.tar.gz).
+
+## UTF-8 locale and btop
+
+The reference ImmortalWrt login shell had LANG, LC_ALL and LC_CTYPE all unset.
+The terminal can display UTF-8, but btop 1.4.7 cannot infer that from TERM alone
+and exits with `No UTF-8 locale detected!`. This is a locale-environment issue.
+
+The OpenWrt profile now defaults an unset/empty LANG to `C.UTF-8`, supported by
+musl without generating a glibc locale archive. It preserves explicit LANG,
+LC_ALL and LC_CTYPE settings; local.sh still loads last. The setting applies to
+new login shells or after `. ~/.profile`:
+
+```sh
+chezmoi update
+. ~/.profile
+btop
+```
+
+For a one-command override, use `LC_ALL=C.UTF-8 btop`. `btop --force-utf` bypasses
+btop's detection only; it does not configure locale for other tools.
+No locale package, locale-gen, global LC_ALL override or system service edit is
+required on the tested musl device.
+
+Source: [btop 1.4.7 locale selection](https://github.com/aristocratos/btop/blob/v1.4.7/src/btop.cpp).

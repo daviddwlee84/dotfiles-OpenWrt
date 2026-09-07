@@ -44,3 +44,5 @@ then enter `bash` for Starship; see [shell](docs/shell.md) / [繁中](docs/shell
 
 Use `netrun direct -- COMMAND` / `netrun proxy -- COMMAND` or a child shell
 with `netrun shell proxy bash`. [Network setup](docs/network.md) / [繁中](docs/network.zh-TW.md).
+
+The baseline includes `btop`; login shells default an unset LANG to `C.UTF-8`.

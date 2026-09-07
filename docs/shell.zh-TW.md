@@ -34,3 +34,25 @@ Alpine 的舊原生 chezmoi 不能只因 `--version` 成功就視為相容，還
 參考：[Starship guide](https://starship.rs/guide/)、
 [Starship releases](https://github.com/starship/starship/releases)、
 [Alpine v3.14 community x86 index](https://dl-cdn.alpinelinux.org/alpine/v3.14/community/x86/APKINDEX.tar.gz)。
+
+## UTF-8 locale 與 btop
+
+參考 ImmortalWrt 的 login shell 原本沒有 LANG、LC_ALL 或 LC_CTYPE。
+終端機本身可顯示 UTF-8，但 btop 1.4.7 不能只靠 TERM 推知編碼，因而顯示
+`No UTF-8 locale detected!`。這是 locale 環境變數的問題。
+
+OpenWrt profile 現在將未設定／空白的 LANG 預設為 `C.UTF-8`；musl 直接支援，
+不需要生成 glibc 的 locale archive。明確設定的 LANG、LC_ALL、LC_CTYPE 會保留，
+local.sh 仍最後載入。重新登入或執行 `. ~/.profile` 後生效：
+
+```sh
+chezmoi update
+. ~/.profile
+btop
+```
+
+單次覆寫可用 `LC_ALL=C.UTF-8 btop`。`btop --force-utf` 只略過 btop 的偵測，
+不會替其他工具設定 locale。已測試的 musl 裝置不需要 locale 套件、locale-gen、
+全域 LC_ALL 覆寫或系統服務修改。
+
+來源：[btop 1.4.7 locale 選擇](https://github.com/aristocratos/btop/blob/v1.4.7/src/btop.cpp)。

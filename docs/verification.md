@@ -60,3 +60,12 @@ acceptance remains separate and pending.
 Startup probes now use SIGKILL after 15 seconds, with distinct download/hash/
 extract/version/template stages. A regression test runs a process that ignores
 TERM and verifies it is killed. This does not establish iSH emulator compatibility.
+
+## Btop and UTF-8 locale (2026-09-08)
+
+The user installed native btop 1.4.7-r1 on the same ImmortalWrt device. LANG,
+LC_ALL and LC_CTYPE were all absent from the login environment. With LANG set
+to C.UTF-8, btop entered its interactive terminal screen and exited normally
+without --force-utf. Testing used a temporary CPU/memory-only config and retained
+the user's btop configuration. The managed profile supplies this default only
+when LANG is unset or empty and preserves category overrides.

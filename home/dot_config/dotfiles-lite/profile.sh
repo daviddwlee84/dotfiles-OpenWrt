@@ -4,6 +4,10 @@ export PATH
 EDITOR=${EDITOR:-vi}
 PAGER=${PAGER:-less}
 export EDITOR PAGER
+# OpenWrt's minimal login environment may not declare a character locale.
+# musl provides C.UTF-8; preserve explicit language/category overrides.
+LANG=${LANG:-C.UTF-8}
+export LANG
 case $- in *i*) alias ll='ls -al'; alias g='git';; esac
 # Existing inline ish-bootstrap helpers remain authoritative during migration.
 if [ -r "$HOME/.config/dotfiles-lite/ish.sh" ] && ! command -v ovault >/dev/null 2>&1; then

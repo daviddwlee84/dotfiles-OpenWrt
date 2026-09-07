@@ -1,6 +1,6 @@
 # Tools and support
 
-The default packages are `git git-http openssh-client tmux nano curl ca-bundle jq less coreutils-timeout`.
+The default packages are `git git-http openssh-client tmux nano curl ca-bundle jq less coreutils-timeout btop`.
 Stock BusyBox vi remains available. `--with dev` adds `vim htop ripgrep rsync python3-light`.
 The adapter uses the target's existing apk or opkg feeds; it never mixes Alpine
 packages into OpenWrt. Package availability varies by release and architecture.
@@ -38,3 +38,6 @@ Sources checked 2026-09-07: [Herdr release build](https://github.com/herdrdev/he
 
 [Shell and Starship](shell.md) covers the builtin ash prompt and `--with starship`.
 [netrun](network.md) selects app-level direct/proxy egress or a temporary child shell.
+
+`btop` uses the native feed package and its resolved dependencies. Run it on
+demand; installation starts no resident monitor. See [shell locale](shell.md#utf-8-locale-and-btop).
