@@ -7,3 +7,4 @@ curl
 ca-bundle
 jq
 less
+coreutils-timeout

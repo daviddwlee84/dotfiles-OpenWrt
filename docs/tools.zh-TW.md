@@ -1,6 +1,6 @@
 # 工具與支援
 
-預設套件為 `git git-http openssh-client tmux nano curl ca-bundle jq less`；保留 BusyBox vi。
+預設套件為 `git git-http openssh-client tmux nano curl ca-bundle jq less coreutils-timeout`；保留 BusyBox vi。
 `--with dev` 加裝 `vim htop ripgrep rsync python3-light`。Adapter 使用裝置既有的
 apk 或 opkg feeds，不把 Alpine 套件混入 OpenWrt。可用套件依版本與架構而異。
 
@@ -32,3 +32,6 @@ RPi-ImmortalWrt 負責韌體、網路與 proxy 操作。fzf、lazygit、gh、Neo
 [Codex releases](https://github.com/openai/codex/releases/tag/rust-v0.153.4)、
 [Claude 需求](https://code.claude.com/docs/en/setup)、
 [OpenWrt apk](https://openwrt.org/docs/guide-user/additional-software/apk)。
+
+內建 ash prompt 與 `--with starship` 見 [Shell 與 Starship](shell.md)。
+[netrun](network.md) 可按命令或暫時子 shell 選擇直連／代理出口。

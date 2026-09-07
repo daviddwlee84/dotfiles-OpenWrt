@@ -1,0 +1,97 @@
+#!/bin/sh
+# App-level egress selection. Never changes UCI, nftables or services.
+set -eu
+
+fail() { printf 'netrun: %s\n' "$*" >&2; exit 1; }
+usage() {
+    printf '%s\n' \
+        'Usage: netrun status' \
+        '       netrun direct|proxy -- COMMAND [ARGS...]' \
+        '       netrun shell direct|proxy [ash|bash]' \
+        'proxy uses the local authenticated Nikki listener and its existing rules.' \
+        'Only proxy-aware applications follow these environment settings; ping/SSH do not.'
+}
+
+TASK_ROOT=''
+if [ -n "${DOTFILES_TEST_ROOT:-}" ]; then
+    [ "${DOTFILES_TEST_MODE:-}" = fixture-only-v1 ] || fail 'invalid fixture mode'
+    case "$DOTFILES_TEST_ROOT" in /*) ;; *) fail 'fixture root must be absolute';; esac
+    [ "$DOTFILES_TEST_ROOT" != / ] && [ -f "$DOTFILES_TEST_ROOT/.fixture" ] || fail 'invalid fixture root'
+    [ "$HOME" = "$DOTFILES_TEST_ROOT/home" ] || fail 'fixture HOME must be isolated'
+    TASK_ROOT=$DOTFILES_TEST_ROOT
+fi
+
+action=${1:-status}
+[ "$#" = 0 ] || shift
+case "$action" in --help|-h|help) usage; exit 0;; esac
+[ -f "$TASK_ROOT/etc/openwrt_release" ] || fail 'OpenWrt/ImmortalWrt is required'
+command -v uci >/dev/null 2>&1 || fail 'uci is unavailable'
+
+if [ "$action" = status ]; then
+    [ "$#" = 0 ] || fail 'status takes no arguments'
+    mode=${DOTFILES_NET_MODE:-inherit}
+    case "$mode" in direct|proxy|inherit) ;; *) mode=inherit;; esac
+    configured=no
+    [ -z "${http_proxy:-}${https_proxy:-}${all_proxy:-}${HTTP_PROXY:-}${HTTPS_PROXY:-}${ALL_PROXY:-}" ] || configured=yes
+    printf 'shell mode: %s\napp proxy configured: %s\n' "$mode" "$configured"
+    printf 'Nikki enabled: %s\nrouter_proxy: %s\n' \
+        "$(uci -q get nikki.config.enabled 2>/dev/null || printf unknown)" \
+        "$(uci -q get nikki.proxy.router_proxy 2>/dev/null || printf unknown)"
+    exit 0
+fi
+
+if [ "$action" = shell ]; then
+    [ "$#" -ge 1 ] && [ "$#" -le 2 ] || fail 'shell requires direct|proxy and optional ash|bash'
+    mode=$1
+    selected_shell=${2:-ash}
+    case "$selected_shell" in ash|bash) ;; *) fail 'choose ash or bash';; esac
+    shell_path=$(command -v "$selected_shell") || fail "$selected_shell is not installed"
+    set -- "$shell_path" -l
+else
+    mode=$action
+    [ "${1:-}" = -- ] || fail 'separate the mode and command with --'
+    shift
+    [ "$#" -gt 0 ] || fail 'a command is required'
+fi
+case "$mode" in direct|proxy) ;; *) fail 'choose direct or proxy';; esac
+
+# Changes are confined to this process and the command/subshell it replaces.
+unset http_proxy https_proxy all_proxy ftp_proxy HTTP_PROXY HTTPS_PROXY ALL_PROXY FTP_PROXY no_proxy NO_PROXY
+DOTFILES_NET_MODE=$mode
+export DOTFILES_NET_MODE
+if [ "$mode" = direct ]; then
+    no_proxy='*'
+    NO_PROXY='*'
+    export no_proxy NO_PROXY
+else
+    [ ! -e "$TASK_ROOT/etc/rpi-immortalwrt/pending.tsv" ] || fail 'a router transaction is pending'
+    [ "$(uci -q get nikki.config.enabled)" = 1 ] || fail 'Nikki is not enabled'
+    [ "$(uci -q get nikki.mixin.authentication)" = 1 ] || fail 'authenticated Nikki listener is required'
+    port=$(uci -q get nikki.mixin.mixed_port)
+    case "$port" in ''|*[!0-9]*) fail 'invalid mixed-port';; esac
+    [ "$port" -ge 1 ] && [ "$port" -le 65535 ] || fail 'invalid mixed-port'
+    sections=$(uci -q show nikki | awk -F= '$2 == "\047authentication\047" || $2 == "authentication" {print $1}')
+    count=0
+    for section in $sections; do
+        [ "$(uci -q get "$section.enabled" 2>/dev/null || true)" = 1 ] || continue
+        proxy_user=$(uci -q get "$section.username")
+        proxy_password=$(uci -q get "$section.password")
+        for credential in "$proxy_user" "$proxy_password"; do
+            [ -n "$credential" ] && [ "${#credential}" -le 128 ] || fail 'invalid listener credentials'
+            case "$credential" in *[!A-Za-z0-9._~-]*) fail 'unsupported listener credential encoding';; esac
+        done
+        count=$((count + 1))
+    done
+    [ "$count" = 1 ] || fail 'exactly one enabled Nikki authentication entry is required'
+    http_proxy="http://$proxy_user:$proxy_password@127.0.0.1:$port"
+    https_proxy=$http_proxy
+    all_proxy=$http_proxy
+    HTTP_PROXY=$http_proxy
+    HTTPS_PROXY=$http_proxy
+    ALL_PROXY=$http_proxy
+    no_proxy='localhost,127.0.0.1,::1'
+    NO_PROXY=$no_proxy
+    export http_proxy https_proxy all_proxy HTTP_PROXY HTTPS_PROXY ALL_PROXY no_proxy NO_PROXY
+    unset proxy_user proxy_password credential
+fi
+exec "$@"

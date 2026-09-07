@@ -99,3 +99,6 @@ if their original location stops being a natural reading flow.
 | Trap | Lives in | Why not here |
 |---|---|---|
 | (example: Tool X version Y bug) | `docs/tool-x.md` → "Known issues" | Already part of the tool's normal config narrative |
+
+| `wget: exited with error 8`, `unexpected end of file` in apk | [network](../docs/network.md) | native apk/wget proxy-auth limitation; choose package-network direct |
+| missing timeout / unsupported tar --strip-components | [network](../docs/network.md) | reduced OpenWrt BusyBox; coreutils-timeout and portable extraction |

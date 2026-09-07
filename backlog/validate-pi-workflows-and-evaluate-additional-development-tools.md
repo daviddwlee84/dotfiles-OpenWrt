@@ -30,3 +30,11 @@ native feed packages; otherwise require a matching architecture/ABI and verified
 release. Record installed/storage/runtime cost before deciding what joins dev.
 No full second backlog document is needed in Unix or Windows; shared platform
 policy is in dotfiles-all/docs/platform-support.md.
+
+## 2026-09-07 device progress
+
+Baseline, chezmoi, Bash/Starship and command/child-shell netrun are verified on the
+Pi. Native apk/wget fails with the authenticated proxy, so package-network direct
+is an explicit bootstrap option; GitHub assets use netrun proxy. Stock BusyBox
+also lacks timeout and tar --strip-components; both setup gaps are fixed.
+Herdr/SpecStory/Codex interactive workloads and resource measurements remain pending.

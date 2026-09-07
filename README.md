@@ -32,3 +32,9 @@ Backward-looking knowledge — past traps and non-obvious debugging — lives in
 message and land on the root cause + workaround instead of re-debugging from
 scratch.
 <!-- project-knowledge-harness:readme-roadmap --> (end)
+
+Shell: ash now has a colored builtin prompt. Opt in with `--with starship`,
+then enter `bash` for Starship; see [shell](docs/shell.md) / [繁中](docs/shell.zh-TW.md).
+
+Use `netrun direct -- COMMAND` / `netrun proxy -- COMMAND` or a child shell
+with `netrun shell proxy bash`. [Network setup](docs/network.md) / [繁中](docs/network.zh-TW.md).

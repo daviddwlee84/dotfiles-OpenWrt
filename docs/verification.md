@@ -28,9 +28,13 @@ free RAM/storage and exact tool versions. Then check:
    private prompts belong in logs or the public repository. Do not disable
    agent isolation to turn an unsupported runtime into a claimed success.
 
-**Current status:** no iPhone or Raspberry Pi deployment was performed by this
-repository's bootstrap during the extraction. Host/CI checks are recorded separately
-from device acceptance. Pending experiments are indexed in the repository TODO.
+**Current status (2026-09-07):** installed and exercised on the referenced Pi
+3B+ / ImmortalWrt 25.12.1: baseline packages, chezmoi 2.72.1, Starship 1.26.0 and
+Bash 5.3.15. chezmoi diff was empty, Bash displayed Starship, and a proxy child
+shell fetched raw.githubusercontent.com with HTTP 200 / valid TLS before returning
+to an unchanged parent environment. Network, firewall, Nikki and active-marker
+file hashes were unchanged; all five existing proxy-health endpoints passed.
+No reboot, iSH emulator, coding-agent login or long-running workload claim is made.
 
 The shared shell core/tests/assets lock are copied in the two lightweight repos;
 changes to their shared behavior must be mirrored. Package feeds and user configs

@@ -18,10 +18,14 @@ plugins:
           nav_translations:
             Home: 首頁
             Setup: 安裝與管理
+            Shell and Starship: Shell 與 Starship
+            Application egress: 按需選擇出口
             Tools: 工具與支援
             Verification: 驗證與維護
 nav:
   - Home: index.md
   - Setup: setup.md
   - Tools: tools.md
+  - Application egress: network.md
+  - Shell and Starship: shell.md
   - Verification: verification.md

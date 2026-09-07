@@ -1,6 +1,6 @@
 # Tools and support
 
-The default packages are `git git-http openssh-client tmux nano curl ca-bundle jq less`.
+The default packages are `git git-http openssh-client tmux nano curl ca-bundle jq less coreutils-timeout`.
 Stock BusyBox vi remains available. `--with dev` adds `vim htop ripgrep rsync python3-light`.
 The adapter uses the target's existing apk or opkg feeds; it never mixes Alpine
 packages into OpenWrt. Package availability varies by release and architecture.
@@ -35,3 +35,6 @@ Sources checked 2026-09-07: [Herdr release build](https://github.com/herdrdev/he
 [Codex releases](https://github.com/openai/codex/releases/tag/rust-v0.153.4),
 [Claude requirements](https://code.claude.com/docs/en/setup),
 [OpenWrt apk](https://openwrt.org/docs/guide-user/additional-software/apk).
+
+[Shell and Starship](shell.md) covers the builtin ash prompt and `--with starship`.
+[netrun](network.md) selects app-level direct/proxy egress or a temporary child shell.

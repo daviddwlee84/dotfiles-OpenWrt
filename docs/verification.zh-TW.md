@@ -21,8 +21,12 @@ CI 另在可拋棄的 x86_64／ARM64 musl container 啟動鎖定的 Linux binary
 6. Agent 由你使用個人憑證手動驗收；憑證與私人 prompt 不進 log 或 public repo。
    不藉停用 agent 隔離把不支援的 runtime 宣稱為成功。
 
-**目前狀態：**拆分時未透過本 repo 的 bootstrap 部署到 iPhone 或 Raspberry Pi。
-主機／CI 結果與實機驗收分別記錄；後續實驗由 repo 的 TODO 索引。
+**目前狀態（2026-09-07）：**已在參考 Pi 3B+／ImmortalWrt 25.12.1 安裝並測試
+基本套件、chezmoi 2.72.1、Starship 1.26.0 與 Bash 5.3.15。
+chezmoi diff 為空，Bash 正常顯示 Starship；proxy 子 shell 取得 raw.githubusercontent.com
+的 HTTP 200／有效 TLS，離開後原 shell 環境保持原樣。
+network、firewall、Nikki、active marker 的檔案 hash 未改變；五個既有 proxy-health endpoint 全通過。
+未宣稱完成 reboot、iSH 模擬器、agent 登入或長時間工作負载驗證。
 
 兩個輕量 repo 的共用 shell core、tests、assets lock 是相同副本，變更共同行為時同步修改。
 套件來源與使用者設定維持平台原生；維護工具及 release assets 不自動升級。

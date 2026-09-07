@@ -10,13 +10,15 @@ Unix > Windows >> iSH / OpenWrt. Keep the target baseline small.
   are mirrored verbatim in the other lightweight companion. Update both together.
 - home/ is the chezmoi source; config/files.list explicitly maps those SAME source
   files for sh deployment. Test both managers after changing a managed file.
-- Preserve user state. No system upgrades, feed replacement, shell changes,
+- Preserve user state. No system upgrades, feed replacement, login-shell changes,
   credential writes, service enable/restart, UCI/network/firewall changes or
   automatic git commits/pushes on target devices.
+- ash has a builtin-only prompt; Starship uses upstream Bash initialization. No chsh or automatic exec bash.
 - Installs are install-only. Release URLs/architecture/member/SHA-256/size are
   locked in config/assets.lock. Never bypass a failed checksum or runtime probe.
 - Existing SSH/tmux configs are seeds; never overwrite them. Preserve legacy
   iSH helpers and user profile content. Runtime local.sh is never managed.
+- netrun changes only child environment; never print proxy credentials, change router_proxy or rewrite firewall/rules. Shell sessions are child shells; exit restores the parent.
 - Herdr settings belong to Herdr/user; do not copy the full Unix overlay or
   install helpers/plugins whose dependencies are absent.
 - Tests use isolated HOME + fixture-only-v1; never run target bootstrap on the
