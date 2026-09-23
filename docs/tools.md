@@ -13,7 +13,7 @@ sh bootstrap.sh --with codex
 
 | Tool | First-version support |
 |---|---|
-| Herdr | Locked musl ARM64/x86_64 releases; small seed config and default Ctrl+b keymap. No Unix plugins, pickers or heavy helpers. Runtime edits remain user-owned. |
+| Herdr | Locked musl ARM64/x86_64 releases; Catppuccin Mocha seed, distinct symbols, machine/agent/task-title rows and aligned Ctrl+b shortcuts. No Unix plugins, pickers or heavy helpers. Runtime edits remain user-owned. |
 | SpecStory | Locked CGO-disabled ARM64/x86_64 builds; manually run `specstory run codex` or another installed agent. Installation does not launch an agent or enable cloud sync. |
 | Codex | Experimental ARM64/x86_64 musl binary, with Bash/ripgrep dependencies. A successful version probe is not a working agent session. Use existing agent authentication and normal isolation. |
 | Claude Code | Remote use on the 1 GB Pi; official minimum is 4 GB RAM. No first-version local installer. |
@@ -41,3 +41,5 @@ Sources checked 2026-09-07: [Herdr release build](https://github.com/herdrdev/he
 
 `btop` uses the native feed package and its resolved dependencies. Run it on
 demand; installation starts no resident monitor. See [shell locale](shell.md#utf-8-locale-and-btop).
+
+Herdr is pinned to v0.9.1 with verified release size and SHA-256. The seed adds Unix split keys (`prefix+|` / `%`, `prefix+-` / `"`), reload (`prefix+R`), tab rename (`prefix+,`), new worktree (`prefix+B`), workspace/agent indexes (`prefix+Ctrl+1..9` / `prefix+Alt+1..9`), j/k workspace navigation, and `prefix+M` for the installed btop. Existing config remains user-owned: a seed update does not replace it.

@@ -1,11 +1,39 @@
 # Minimal seed. Herdr/user owns this file after the first apply.
-# Ctrl+b prefix and the built-in keymap match the basic Unix workflow.
+# Herdr 0.9.1+; align the basic Unix workflow without desktop dependencies.
 [theme]
 name = "catppuccin"
+auto_switch = false
 
 [ui]
 confirm_close = true
+status_indicators = "symbols"
+agent_panel_sort = "priority"
+
+[ui.sidebar.agents]
+rows = [
+  ["state_icon", "workspace", "tab"],
+  ["machine", "agent"],
+  ["terminal_title_stripped"],
+]
 
 [terminal]
 shell_mode = "auto"
 new_cwd = "follow"
+
+[keys]
+split_vertical = ["prefix+|", "prefix+%"]
+split_horizontal = ["prefix+minus", 'prefix+"']
+reload_config = "prefix+shift+r"
+rename_tab = "prefix+,"
+new_worktree = "prefix+shift+b"
+switch_workspace = "prefix+ctrl+1..9"
+focus_agent = "prefix+alt+1..9"
+navigate_workspace_down = ["j", "down"]
+navigate_workspace_up = ["k", "up"]
+
+# btop is a baseline native package; no new package is installed by this binding.
+[[keys.command]]
+key = "prefix+M"
+type = "pane"
+command = "btop"
+description = "btop system monitor (temporary pane)"

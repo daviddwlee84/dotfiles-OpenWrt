@@ -12,7 +12,7 @@ sh bootstrap.sh --with codex
 
 | 工具 | 第一版支援 |
 |---|---|
-| Herdr | 鎖定 musl ARM64／x86_64 release；精簡 seed config、預設 Ctrl+b keymap；不帶 Unix plugins、pickers 或大型 helpers，runtime 設定由使用者管理。 |
+| Herdr | 鎖定 musl ARM64／x86_64 release；Catppuccin Mocha seed、distinct symbols、machine／agent／任務標題與對齊的 Ctrl+b 快捷鍵；不帶 Unix plugins、pickers 或大型 helpers，runtime 設定由使用者管理。 |
 | SpecStory | 鎖定停用 CGO 的 ARM64／x86_64 build；手動執行 `specstory run codex` 或其他已安裝 agent。安裝不啟動 agent 或開啟 cloud sync。 |
 | Codex | 實驗性 ARM64／x86_64 musl binary，附 Bash／ripgrep 依賴；版本檢查不等於 agent session 成功，使用原有登入與正常隔離。 |
 | Claude Code | 1 GB Pi 採遠端使用；官方最低要求 4 GB RAM，第一版無本機 installer。 |
@@ -38,3 +38,5 @@ RPi-ImmortalWrt 負責韌體、網路與 proxy 操作。fzf、lazygit、gh、Neo
 
 `btop` 使用原生 feed 套件及其相依項，按需執行；安裝不啟動常駐監控。
 Locale 設定見 [Shell 與 Starship](shell.md)。
+
+Herdr 固定為 v0.9.1，並驗證官方 release 的大小與 SHA-256。Seed 加入 Unix 分割鍵（`prefix+|`／`%`、`prefix+-`／`"`）、reload（`prefix+R`）、改 tab 名（`prefix+,`）、新 worktree（`prefix+B`）、workspace／agent 編號切換（`prefix+Ctrl+1..9`／`prefix+Alt+1..9`）、j/k workspace 導覽，以及開啟既有 btop 的 `prefix+M`。既有設定仍由使用者管理，seed 更新不會覆蓋它。
